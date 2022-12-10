@@ -1,0 +1,181 @@
+import java.util.Random;
+import java.util.Scanner;
+/**
+ * Write a description of class Venture_Profile here.
+ *
+ * @author (your name)
+ * @version (a version number or a date)
+ */
+public class Profile
+{
+    private String name;
+    private int age;
+    private float Money;
+    private int Limt;
+    private int profileNum;
+    private String coin_results;
+    private String prediction;
+    private Float wager;
+    private int Rounds;
+    Random wacky = new Random();
+    Scanner input = new Scanner (System.in);
+    private boolean Broke;
+   public Profile(String name, int age, float Money, int Limt)
+   {
+       this.name = name;
+       this.age = age;
+       this.Money = Money;
+       this.Limt = Limt;
+       profileNum += 1;
+       System.out.println("Profile["+profileNum+"]:" +name + " Age:"+age+ " Cash $"+Money+ " Rounds:"+Limt); 
+   }
+   public String getName()
+    {
+        System.out.println("Name: "+name);
+        return name;
+    }
+   public void setName(String n)
+    {
+        name = n;
+    }  
+    public int getAge()
+    {
+        return age;
+    }
+    public void setAge(int a)
+    {
+        age = a;
+    }
+    public void ProfileSettings()
+    {
+        System.out.println("|||ProfileSettings||| //Press the numbers for options"); 
+        System.out.println("[1]: ProfileName");
+        if (input.nextInt() == 1)
+        { 
+            System.out.println("[1]: DisplayName");
+            System.out.println("[2]: ChangeName");
+            System.out.println("[0]: Menu");
+            if (input.nextInt() == 1)
+            { 
+                getName();
+                ProfileSettings();
+            }
+            else if (input.nextInt() == 2)
+            {
+                System.out.println("Change Your Name From " + name);
+                String nextName = input.next();
+                setName(nextName);
+                System.out.println("Name is now " + nextName);
+                ProfileSettings();
+            }
+            else if (input.nextInt() == 0)
+            {
+                Menu();
+            }
+            else
+            {
+                System.out.println("Incorrect Input");
+            }
+        }
+    }
+   public void Menu()
+   {
+       
+        System.out.println("|||Menu||| //Press the numbers for options, might need to input twice"); 
+        System.out.println("[1]: COIN TOSS");
+        System.out.println("[0]: Profile Settings");
+           if (input.nextInt() == 1)
+           {
+               CoinToss();
+               //input.close();
+           }
+           else if (input.nextInt() == 0)
+           {
+               ProfileSettings();
+           }
+           else
+           {
+             System.out.println("No");
+           }
+        input.nextInt();    
+    
+   }
+   public void Wager()
+   {
+        System.out.println("How much do you wager?");
+        float funds = input.nextFloat();
+        if (funds > Money)
+        {
+            System.out.println("You do not have that much too wager");
+            funds = input.nextFloat();
+        }
+        else
+        {
+            this.wager = funds;
+            System.out.println("You wager " + wager);
+        }
+   }
+   public void AddFunds()
+   {
+        Money += this.wager;
+        System.out.println("Gained: $" + wager + " Money: $" + Money);
+        System.out.println("Winner!");
+        Rounds += 1;
+   }
+   public void LostFunds()
+   {
+       Money -= this.wager;
+       System.out.println("Lossed: $" + wager + " Money: $" + Money);
+       System.out.println("Defeat!");
+       CheckBankruptcy();
+       Rounds += 1;
+   }
+   public void CheckBankruptcy()
+   {
+       if (Money <= 0)
+       {
+           Broke = true;
+       }
+       else
+       {
+           Broke = false;
+       }
+       if (Broke)
+       {
+           System.out.println("Your Money $"+Money);
+           System.out.println("YOUR BROKE!!!!!");
+           System.out.println("Game Over!!!");
+           input.close();
+       }
+       
+    }
+   public void CoinToss()
+   {
+        System.out.println("COIN TOSS START");
+        float coin_info = wacky.nextInt(2);
+        System.out.println("Enter your prediction for the cointoss"); System.out.println("Enter 'T' for Tails, 'H' for Heads");
+        prediction = input.next();
+        //System.out.println("How much do you wager?");
+        Wager();    
+        if (coin_info > 0)
+        {
+            this.coin_results = "H";
+        }
+        else
+        {
+            this.coin_results = "T";
+        }
+        System.out.println("The coin landed "+ coin_results + ":" + coin_info);
+        if (prediction.equals(coin_results))
+        {
+            
+            AddFunds();
+        }
+        else
+        {
+            
+            LostFunds();
+        }
+        Menu();
+   }
+}
